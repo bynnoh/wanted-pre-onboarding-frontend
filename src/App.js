@@ -1,5 +1,6 @@
-import './App.css';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
@@ -7,11 +8,11 @@ class App extends React.Component {
     this.state = {
       email: '',
       password: '',
-      disabled: true
+      disabled: true,
+      submitted: false
     }
-
-    this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)
   }
 
   handleInputChange(e) {
@@ -27,39 +28,53 @@ class App extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-  }
-  
-  render() {
-    const email = this.state.email
-    const password = this.state.password
-    const disabled = this.state.disabled
 
+    axios.post('https://pre-onboarding-selection-task.shop/auth/signin', {
+      email: this.state.email,
+      password: this.state.password
+    })
+    .then((response) => {
+      const data = response.data;
+      localStorage.setItem("accessToken", data.access_token);
+      this.setState({submitted: true});
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  render() {
     return(
       <div>
+        {localStorage.getItem("accessToken") && <Navigate to="/todo"></Navigate>}
+        {this.submitted && <Navigate to="/todo"></Navigate>}
         <form onSubmit={this.handleSubmit}>
           <label>
             E-mail
             <input
               type="email"
               name="email"
-              value={email}
+              value={this.state.email}
               onChange={this.handleInputChange}>
             </input>
           </label>
+          <br />
           <label>
             Password
             <input
               type="password"
               name="password"
-              value={password}
+              value={this.state.password}
               onChange={this.handleInputChange}>
             </input>
           </label>
-          <button type="submit" disabled={disabled}>
+          <br />
+          <button type="submit" disabled={this.state.disabled}>
             로그인
           </button>
         </form>
-        {this.state.password.length}
+        <a href="/signup">회원가입</a>
+        {localStorage.getItem("accessToken")}
       </div>
     )
   }
