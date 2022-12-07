@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [disabled, setDisabled] = useState(true)
+    const [disabled, setDisabled] = useState(true);
+    const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ function SignUp() {
             navigate("/");
         })
         .catch((err) => {
-            console.log(err)
+            setMessage(err.response.data.message);
         })
     }
     
@@ -61,7 +62,7 @@ function SignUp() {
                     회원가입
                 </button>
             </form>
-            {email}<br />{password}
+            {message}
         </div>
     )
 }
