@@ -5,6 +5,8 @@
     ```
     npm start
     ```
-2. http://localhost:3000
+2. 로컬에서 접속: http://localhost:3000
 
 ## 배포링크
+- 데모 영상 대신 배포링크로 대체합니다.
+- https://main.d3lkxadmjog4sz.amplifyapp.com/
