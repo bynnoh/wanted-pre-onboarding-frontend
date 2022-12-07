@@ -7,6 +7,7 @@ function Todo() {
     const [todo, setTodo] = useState('');
     const [data, setData] = useState([]);
     const [isUpdated, setIsUpdated] = useState(false);
+    const [message, setMessage] = useState('');
 
     const token = localStorage.getItem("accessToken");
 
@@ -22,7 +23,7 @@ function Todo() {
                 setIsUpdated(false);
             })
             .catch((err) => {
-                console.log(err);
+                setMessage(err.response.data.message);
             });
         } else {
             navigate("/");
@@ -46,7 +47,7 @@ function Todo() {
             setIsUpdated(true);
         })
         .catch((err) => {
-            console.log(err);
+            setMessage(err.response.data.message);
         });
     }
 
@@ -73,7 +74,7 @@ function Todo() {
                 setIsUpdated(true);
             })
             .catch((err) => {
-                console.log(err)
+                setMessage(err.response.data.message);
             })
         }
 
@@ -103,7 +104,7 @@ function Todo() {
                 setIsUpdated(true);
             })
             .catch((err) => {
-                console.log(err);
+                setMessage(err.response.data.message);
             });
         }
 
@@ -131,6 +132,7 @@ function Todo() {
                         </button>
                     </form>
                 </div>}
+                {message}
             </div>
         )
     }
